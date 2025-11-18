@@ -9,7 +9,8 @@ class TestAccessNestedMap(unittest.TestCase):
     
     @parameterized.expand([
         [{"a": {"b": 2}, "b" : {"c":5 , "d":77}}, ("b", "d"), 77],
-        [{"a": {"b": 2}, "b" : {"c":5 , "d":77}}, ("b", "c"), 5]
+        [{"a": {"b": 2}, "b" : {"c":5 , "d":77}}, ("b", "c"), 5],
+        [{"a": {"b": 2}}, ("a", "b"), 2]
     ])
     def test_access_nested_map(self,nested_map,path,expected_result):
 
