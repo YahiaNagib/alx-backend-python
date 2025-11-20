@@ -79,4 +79,6 @@ def memoize(fn: Callable) -> Callable:
 # nested_map={"a": {"b": 2}, "b" : {"c":5 , "d":77}}
 # path=("b", "d")
 
-# print(access_nested_map(nested_map,path))
+# result = get_json("https://jsonplaceholder.typicode.com/posts")
+
+# print(result)
