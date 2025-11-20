@@ -37,37 +37,27 @@ class TestAccessNestedMap(unittest.TestCase):
      
 
 
+
+
+
 class TestGetJson(unittest.TestCase):
 
-    @patch('utils.requests.get')
-    def test_get_json(self, mock_get):
+    Test_cases = [
+            ["http://example.com", {"payload": True}],
+            ["http://holberton.io", {"payload": False}]
+        ]
 
-        test_url = "http://example.com"
-        test_url_2 = "http://holberton.io"
+    @parameterized.expand(Test_cases)
+    @patch('utils.requests.get')
+    def test_get_json(self, test_url, result ,mock_get):
 
         success_mock = Mock(status_code=200, ok=True)
-        success_mock.json.return_value = {"payload": True}
+        success_mock.json.return_value = result
 
-        success_mock_2 = Mock(status_code=200, ok=True)
-        success_mock_2.json.return_value = {"payload": False}
-
-        # Setup the mock queue correctly
-        mock_get.side_effect = [success_mock, success_mock_2]
+        mock_get.return_value = success_mock
         
-        user_data_1 = utils.get_json(test_url)
-        self.assertEqual(user_data_1['payload'], True)
+        user_data = utils.get_json(test_url)
+        self.assertEqual(user_data['payload'], result['payload'])
         
-        user_data_2 = utils.get_json(test_url_2)
-        self.assertEqual(user_data_2['payload'], False)
+        mock_get.assert_called_once_with(test_url)
         
-        
-        self.assertEqual(mock_get.call_count, 2, "requests.get must be called exactly twice.")
-        
-        expected_calls = [
-            call(test_url),
-            call(test_url_2)
-        ]
-        
-        mock_get.assert_has_calls(expected_calls)
-        
-    
