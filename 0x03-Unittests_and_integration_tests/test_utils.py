@@ -59,7 +59,9 @@ class TestGetJson(unittest.TestCase):
 
 class TestMemoize(unittest.TestCase):
     """
-    This is a documentation for TestMemoize
+    This is a documentation for TestMemoize.
+    This is a documentation for TestMemoize.
+    This is a documentation for TestMemoize.
     """
     def test_memoize(self):
         class TestClass:
