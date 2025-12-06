@@ -15,8 +15,6 @@ class User(AbstractUser):
    
     ROLE = [('guest', 'Guest'), ('host', 'Host'), ('admin', 'Admin')]
 
-    password =''
-
     first_name = models.CharField(max_length=150, blank=False, null=False)
     last_name = models.CharField(max_length=150, blank=False, null=False)
 
