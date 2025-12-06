@@ -1,11 +1,21 @@
+import uuid
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 
 class User(AbstractUser):
+
+    user_id = models.UUIDField(
+        primary_key=True, 
+        default=uuid.uuid4, 
+        editable=False, 
+        db_index=True
+    )
    
     ROLE = [('guest', 'Guest'), ('host', 'Host'), ('admin', 'Admin')]
+
+    passowrd =''
 
     first_name = models.CharField(max_length=150, blank=False, null=False)
     last_name = models.CharField(max_length=150, blank=False, null=False)
@@ -33,6 +43,13 @@ class User(AbstractUser):
 
 
 class Message(models.Model):
+
+    message_id = models.UUIDField(
+        primary_key=True, 
+        default=uuid.uuid4, 
+        editable=False, 
+        db_index=True
+    )
 
     # sender_id: Foreign Key to User
     # on_delete=models.CASCADE means if the User is deleted, their messages are deleted.
@@ -73,6 +90,13 @@ class Message(models.Model):
 
 class Conversation(models.Model):
     
+    conversation_id = models.UUIDField(
+        primary_key=True, 
+        default=uuid.uuid4, 
+        editable=False, 
+        db_index=True
+    )
+
     # participants: ManyToMany (Allows multiple users in one conversation)
     participants = models.ManyToManyField(
         User, 
