@@ -4,7 +4,7 @@
 import utils
 import unittest
 
-from unittest.mock import Mock, patch, call
+from unittest.mock import Mock, patch
 from parameterized import parameterized
 
 """
