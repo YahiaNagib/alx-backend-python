@@ -11,5 +11,5 @@ router.register(r'conversations', views.ConversationViewSet, basename='conversat
 router.register(r'messages', views.MessageViewSet, basename='message')
 
 urlpatterns = [
-    path('api-auth', include(router.urls)),
+    path('', include(router.urls)),
 ]
