@@ -127,7 +127,7 @@ AUTH_USER_MODEL = 'chats.User'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',  # For your React Frontend
+        'rest_framework.authentication.BasicAuthentication',  # For your React Frontend
         'rest_framework.authentication.SessionAuthentication',      # REQUIRED: For Django Admin login
     ],
     'DEFAULT_PERMISSION_CLASSES': [
