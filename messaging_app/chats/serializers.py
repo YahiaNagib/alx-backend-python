@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
+from .models import User
 from .models import Conversation, Message
 
 # -------------------------
@@ -12,7 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'password']
+        fields = ['user_id', 'username', 'email', 'password']
 
     def create(self, validated_data):
         """
@@ -35,8 +35,8 @@ class MessageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Message
-        fields = ['id', 'conversation', 'sender', 'sender_info', 'text', 'timestamp']
-        read_only_fields = ['timestamp', 'sender']
+        fields = ['message_id', 'conversation', 'sender', 'sender_info', 'message_body', 'sent_at']
+        read_only_fields = ['sent_at', 'sender']
 
     def validate_text(self, value):
         """
@@ -65,18 +65,18 @@ class ConversationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Conversation
-        fields = ['id', 'participants', 'created_at', 'last_message']
+        fields = ['conversation_id', 'participants', 'created_at', 'last_message']
 
     def get_last_message(self, obj):
         """
         Retrieves the most recent message in this conversation.
         """
         # Assuming you have a related_name='messages' in your Message model
-        message = obj.messages.order_by('-timestamp').first()
+        message = obj.messages.order_by('-sent_at').first()
         if message:
             return {
-                "text": message.text,
-                "timestamp": message.timestamp,
+                "message_body": message.message_body,
+                "sent_at": message.sent_at,
                 "sender": message.sender.username
             }
         return None
