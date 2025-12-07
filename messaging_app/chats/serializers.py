@@ -1,6 +1,5 @@
 from rest_framework import serializers
-from .models import User
-from .models import Conversation, Message
+from .models import Conversation, Message, User
 
 # -------------------------
 # User Serializer
@@ -12,7 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['user_id', 'username', 'email', 'password']
+        fields = ['user_id', 'username', 'email', 'password', 'first_name']
 
     def create(self, validated_data):
         """
