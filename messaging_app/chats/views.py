@@ -1,4 +1,6 @@
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, status
+from rest_framework.response import Response
+from .permissions import IsMessageSender, IsParticipantOfConversation
 from .models import Conversation, Message, User
 from .serializers import UserSerializer, ConversationSerializer, MessageSerializer
 
@@ -21,7 +23,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
 class ConversationViewSet(viewsets.ModelViewSet):
     serializer_class = ConversationSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsParticipantOfConversation]
 
     def get_queryset(self):
         """
@@ -40,7 +42,7 @@ class ConversationViewSet(viewsets.ModelViewSet):
 
 class MessageViewSet(viewsets.ModelViewSet):
     serializer_class = MessageSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsMessageSender]
 
     def get_queryset(self):
         """
@@ -56,6 +58,32 @@ class MessageViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(conversation_id=conversation_id)
             
         return queryset
+    
+    def create(self, request, *args, **kwargs):
+        """
+        Overriding .create() allows us to return a custom Response
+        with a specific status code before the object is saved.
+        """
+        # 1. Check if the conversation ID provided exists and is valid
+        conversation_id = request.data.get('conversation')
+        
+        try:
+            conversation = Conversation.objects.get(id=conversation_id)
+        except Conversation.DoesNotExist:
+            return Response(
+                {"detail": "Conversation not found."}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        # 2. explicit 403 check: Is the user a participant?
+        if request.user not in conversation.participants.all():
+            return Response(
+                {"detail": "You cannot send messages to this conversation."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        # 3. If checks pass, continue with standard creation
+        return super().create(request, *args, **kwargs)
 
     def perform_create(self, serializer):
         """
