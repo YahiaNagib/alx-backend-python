@@ -1,10 +1,16 @@
 from rest_framework import permissions
 
 class IsParticipantOfConversation(permissions.BasePermission):
-
+    
     def has_object_permission(self, request, view, obj):
-        # Read permissions are allowed to any request,
-        # so long as the user is a participant.
+        # 1. Check if user is logged in
+        # Note: Use .is_authenticated (property), not .IsAuthenticated()
+        
+        if not request.user or not request.user.is_authenticated:
+            return False
+
+        # 2. Check if user is in the participants list
+        # We return the result of this comparison directly (True/False)
         return request.user in obj.participants.all()
     
 
