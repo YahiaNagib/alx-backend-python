@@ -138,7 +138,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',               # REQUIRED: Locks the API by default
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10,  # Number of records per page
+    'PAGE_SIZE': 20,  # Number of records per page
 }
 # settings.py
 
