@@ -1,5 +1,6 @@
 from rest_framework import viewsets, permissions, status
 from rest_framework.response import Response
+from .pagination import StandardResultsSetPagination
 from .permissions import IsMessageSender, IsParticipantOfConversation
 from .models import Conversation, Message, User
 from .serializers import UserSerializer, ConversationSerializer, MessageSerializer
@@ -10,6 +11,7 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    pagination_class = StandardResultsSetPagination
 
     def get_permissions(self):
         """
