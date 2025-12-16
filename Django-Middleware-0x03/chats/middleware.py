@@ -1,6 +1,6 @@
 import time, datetime
 
-class RequestTimingMiddleware:
+class RequestLoggingMiddleware:
     def __init__(self, get_response):
         # One-time configuration and initialization.
         self.get_response = get_response
