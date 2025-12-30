@@ -1,4 +1,5 @@
 import time, datetime
+from django.http import HttpResponseForbidden
 
 class RequestLoggingMiddleware:
     def __init__(self, get_response):
@@ -24,3 +25,12 @@ class RequestLoggingMiddleware:
 
 
         return response
+    
+
+class RestrictAccessByTimeMiddleware:
+    def __init__(self, get_response):
+        # One-time configuration and initialization.
+        self.get_response = get_response
+
+    def __call__(self, request):
+        pass
